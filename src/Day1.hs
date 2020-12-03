@@ -42,6 +42,6 @@ findMatch (x : xs) target set f =
 bruteDay1 xs = head [ x * y | x <- xs', y <- xs', x + y == 2020 ]
     where xs' = map read xs
 
-bruteDay1' = head
+bruteDay1' xs = head
     [ x * y * z | x <- xs', y <- xs', z <- xs', x + y + z == 2020 ]
     where xs' = map read xs
