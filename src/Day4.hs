@@ -45,20 +45,19 @@ chopList = chop extractPassportData
 allowedEyeColors = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
 
 valid :: Passport -> Bool
-valid p = and validValues
+valid p = all (\k -> validValue k) requiredFields
   where
-    validValues = map validValue requiredFields
-    validValue k
-        | present p = case k of
-            "byr" -> validYear v 1920 2002
-            "iyr" -> validYear v 2010 2020
-            "eyr" -> validYear v 2020 2030
-            "hgt" -> validHeight v
-            "hcl" -> validHairColor v
-            "ecl" -> v `elem` allowedEyeColors
-            "pid" -> validPid v
-        | otherwise = False
-        where v = fromJust $ M.lookup k p
+    validValue k = isJust v' && case k of
+        "byr" -> validYear v 1920 2002
+        "iyr" -> validYear v 2010 2020
+        "eyr" -> validYear v 2020 2030
+        "hgt" -> validHeight v
+        "hcl" -> validHairColor v
+        "ecl" -> v `elem` allowedEyeColors
+        "pid" -> validPid v
+      where
+        v  = fromJust v'
+        v' = M.lookup k p
     validHeight v = case u of
         "cm" -> h >= 150 && h <= 193
         "in" -> h >= 59 && h <= 76
