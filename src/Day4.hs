@@ -22,10 +22,12 @@ import           Data.Char                      ( isHexDigit
 type Passport = M.Map String String
 
 day4 :: [String] -> Int
-day4 = length . filter present . map parsePassport . chopList
+day4 = validateInput present
 
 day4' :: [String] -> Int
-day4' = length . filter valid . map parsePassport . chopList
+day4' = validateInput valid
+
+validateInput f = length . filter f . map parsePassport . chopList
 
 requiredFields = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
 
