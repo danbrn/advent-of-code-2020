@@ -37,10 +37,7 @@ parsePassport =
     M.fromList . map ((\[x, y] -> (x, y)) . splitOn ":") . words . unlines
 
 chopList :: [String] -> [[String]]
-chopList = chop extractPassportData
-  where
-    extractPassportData xs =
-        (takeWhile (not . null) xs, dropWhile null $ dropWhile (not . null) xs)
+chopList = chop $ span (not . null) . dropWhile null
 
 allowedEyeColors = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
 
