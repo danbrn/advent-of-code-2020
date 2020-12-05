@@ -69,8 +69,6 @@ valid p = all (\k -> validValue k) requiredFields
       where
         prefix    = head c
         colorCode = tail c
-    validYear y from to =
-        length y == 4 && all isDigit y && y' >= from && y' <= to
+    validYear y from to = all isDigit y && y' >= from && y' <= to
         where y' = read y
-    validPid p =
-        length p == 9 && all isDigit p && read p >= 0 && read p <= 999999999
+    validPid p = length p == 9 && all isDigit p && read p >= 0
