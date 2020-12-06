@@ -12,8 +12,6 @@ import           Day4                           ( chopList )
 import qualified Data.Set                      as S
 import           Data.Char                      ( isSpace )
 
-type Answers = S.Set Char
-
 day6 :: [String] -> Int
 day6 = sum . map (S.size . collateGroup) . chopList
 
