@@ -3,6 +3,7 @@
 module Day4
     ( day4
     , day4'
+    , chopList
     )
 where
 
