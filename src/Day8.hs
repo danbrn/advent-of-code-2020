@@ -15,7 +15,7 @@ import qualified Data.IntMap                   as M
 data Computer a = Computer Int Int (M.IntMap (Instr a)) (M.IntMap Int) Bool
     deriving Show
 
-data Instr a = Nop | Acc a | Jmp a | Hlt
+data Instr a = Nop a | Acc a | Jmp a
   deriving Show
 
 day8 :: [String] -> Int
@@ -24,13 +24,14 @@ day8 input = accumulator $ runUntilRepeat computer
 
 day8' :: [String] -> Int
 day8' input = accumulator . head . filter isDone $ map
-    (\x -> runUntilRepeat (replaceInstr computer x Nop))
-    (jmps computer)
+    (\x -> runUntilRepeat (switchNopJmp computer x))
+    (instrs computer)
   where
     computer = initComputer input
-    jmps (Computer _ _ code _ _) = M.keys $ M.filter
+    instrs (Computer _ _ code _ _) = M.keys $ M.filter
         (\case
             (Jmp _) -> True
+            (Nop _) -> True
             _       -> False
         )
         code
@@ -42,14 +43,14 @@ initExecuted = M.fromList . (flip zip) (cycle [0]) . M.keys
 
 parse = M.fromList . zip [0 ..] . map parseOp
 
-parseOp op | "nop" `isPrefixOf` op = Nop
+parseOp op | "nop" `isPrefixOf` op = Nop arg
            | "acc" `isPrefixOf` op = Acc arg
            | "jmp" `isPrefixOf` op = Jmp arg
-           | otherwise             = Nop
+           | otherwise             = error "illegal instruction"
     where arg = (read :: String -> Int) $ dropWhile (== '+') $ drop 4 op
 
 runOne (Computer ip acc code exec False) = case code M.!? ip of
-    Just Nop     -> (Computer (succ ip) acc code exec' False)
+    Just (Nop _) -> (Computer (succ ip) acc code exec' False)
     Just (Acc x) -> (Computer (succ ip) (acc + x) code exec' False)
     Just (Jmp x) -> (Computer (ip + x) acc code exec' False)
     Nothing      -> (Computer ip acc code exec True)
@@ -66,5 +67,19 @@ runUntilRepeat comp = runUntilRepeat (runOne comp)
 accumulator (Computer _ acc _ _ _) = acc
 isDone (Computer _ _ _ _ done) = done
 
-replaceInstr (Computer ip acc code exec done) offset instr =
-    (Computer ip acc (M.update (\_ -> Just instr) offset code) exec done)
+switchNopJmp (Computer ip acc code exec done) offset =
+    (Computer
+        ip
+        acc
+        (M.adjust
+            (\case
+                (Nop x) -> (Jmp x)
+                (Jmp x) -> (Nop x)
+                instr   -> instr
+            )
+            offset
+            code
+        )
+        exec
+        done
+    )
