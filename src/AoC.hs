@@ -3,6 +3,7 @@
 module AoC
     ( apply
     , applyN
+    , chopList
     )
 where
 
@@ -16,3 +17,6 @@ applyN :: ([String] -> Int) -> String -> Int -> IO ()
 applyN f fn n = do
     input <- lines <$> readFile fn
     forM_ [1 .. n] (\_ -> seq (f input) (return ()))
+
+chopList :: [String] -> [[String]]
+chopList = chop $ span (not . null) . dropWhile null

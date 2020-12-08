@@ -7,7 +7,6 @@ module Day6
 where
 
 import           AoC
-import           Day4                           ( chopList )
 
 import qualified Data.Set                      as S
 import           Data.Char                      ( isSpace )

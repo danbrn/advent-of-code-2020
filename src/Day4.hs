@@ -39,9 +39,6 @@ parsePassport :: [String] -> Passport
 parsePassport =
     M.fromList . map ((\[x, y] -> (x, y)) . splitOn ":") . words . unlines
 
-chopList :: [String] -> [[String]]
-chopList = chop $ span (not . null) . dropWhile null
-
 allowedEyeColors = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
 
 valid :: Passport -> Bool
