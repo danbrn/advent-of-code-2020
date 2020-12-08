@@ -9,9 +9,7 @@ where
 
 import           AoC
 
-import           Data.List.Split                ( chop
-                                                , splitOn
-                                                )
+import           Data.List.Split                ( splitOn )
 import qualified Data.Map                      as M
 import           Data.Maybe                     ( fromJust
                                                 , isJust

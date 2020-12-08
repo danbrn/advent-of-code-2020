@@ -8,6 +8,7 @@ module AoC
 where
 
 import           Control.Monad                  ( forM_ )
+import           Data.List.Split                ( chop )
 
 apply f fn = do
     input <- lines <$> readFile fn
