@@ -40,7 +40,7 @@ parsePassport =
 allowedEyeColors = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
 
 valid :: Passport -> Bool
-valid p = all (\k -> validValue k) requiredFields
+valid p = all validValue requiredFields
   where
     validValue k = isJust v' && case k of
         "byr" -> validYear v 1920 2002
