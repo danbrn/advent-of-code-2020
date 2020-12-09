@@ -8,7 +8,7 @@ where
 
 import           AoC
 import           Data.List                      ( tails )
-import           Data.Maybe                     ( catMaybes )
+import           Data.Maybe                     ( mapMaybe )
 
 day9 :: [String] -> Int
 day9 =
@@ -30,8 +30,7 @@ day9' input =
     (\xs -> maximum xs + minimum xs)
         . head
         . filter ((> 2) . length)
-        . catMaybes
-        . map (findSum n)
+        . mapMaybe (findSum n)
         $ tails ns
   where
     n  = day9 input
