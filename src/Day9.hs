@@ -8,10 +8,7 @@ where
 
 import           AoC
 import           Data.List                      ( tails )
-import           Data.Maybe                     ( catMaybes
-                                                , fromJust
-                                                , isJust
-                                                )
+import           Data.Maybe                     ( catMaybes )
 
 day9 :: [String] -> Int
 day9 =
