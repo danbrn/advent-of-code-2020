@@ -24,7 +24,7 @@ day8 input = accumulator $ runUntilRepeat computer
 
 day8' :: [String] -> Int
 day8' input = accumulator . head . filter isDone $ map
-    (\x -> runUntilRepeat (switchNopJmp computer x))
+    (runUntilRepeat . switchNopJmp computer)
     (instrs computer)
   where
     computer = initComputer input
@@ -36,10 +36,10 @@ day8' input = accumulator . head . filter isDone $ map
         )
         code
 
-initComputer input = (Computer 0 0 code (initExecuted code) False)
+initComputer input = Computer 0 0 code (initExecuted code) False
     where code = parse input
 
-initExecuted = M.fromList . (flip zip) (cycle [0]) . M.keys
+initExecuted = M.fromList . flip zip (repeat 0) . M.keys
 
 parse = M.fromList . zip [0 ..] . map parseOp
 
@@ -50,10 +50,10 @@ parseOp op | "nop" `isPrefixOf` op = Nop arg
     where arg = (read :: String -> Int) $ dropWhile (== '+') $ drop 4 op
 
 runOne (Computer ip acc code exec False) = case code M.!? ip of
-    Just (Nop _) -> (Computer (succ ip) acc code exec' False)
-    Just (Acc x) -> (Computer (succ ip) (acc + x) code exec' False)
-    Just (Jmp x) -> (Computer (ip + x) acc code exec' False)
-    Nothing      -> (Computer ip acc code exec True)
+    Just (Nop _) -> Computer (succ ip) acc code exec' False
+    Just (Acc x) -> Computer (succ ip) (acc + x) code exec' False
+    Just (Jmp x) -> Computer (ip + x) acc code exec' False
+    Nothing      -> Computer ip acc code exec True
     where exec' = M.adjust (+ 1) ip exec
 
 runUntilRepeat comp@(Computer ip _ _ exec done) | done || n > 0 = comp
@@ -73,8 +73,8 @@ switchNopJmp (Computer ip acc code exec done) offset =
         acc
         (M.adjust
             (\case
-                (Nop x) -> (Jmp x)
-                (Jmp x) -> (Nop x)
+                (Nop x) -> Jmp x
+                (Jmp x) -> Nop x
                 instr   -> instr
             )
             offset
