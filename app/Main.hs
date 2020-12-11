@@ -13,7 +13,7 @@ import           Day7
 import           Day8
 import           Day9
 import           Day10
+import           Day11
 
 main :: IO ()
---main = putStrLn "use ghci"
-main = apply day10' "day10.txt"
+main = putStrLn "use ghci"
