@@ -42,9 +42,7 @@ instance Enum Direction where
     fromEnum South = 2
     fromEnum West  = 3
 
-input = lines "F10\nN3\nF7\nR90\nF11"
-
--- day12 :: [String] -> Int
+day12 :: [String] -> Int
 day12 = manhattan . position . navigate (Ferry East (0, 0)) . parseRoute
 
 day12' :: [String] -> Int
