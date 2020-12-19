@@ -51,10 +51,8 @@ parseRule line =
   where
     ruleList  = splitOn ": " line
     fieldName = head ruleList
-    numbers =
-        concat . map (map (read :: String -> Int) . splitOn "-") $ splitOn
-            " or "
-            (ruleList !! 1)
+    numbers   = concatMap (map (read :: String -> Int) . splitOn "-")
+        $ splitOn " or " (ruleList !! 1)
 
 isValid rules value = any (\(_, f) -> f value) rules
 
