@@ -19,6 +19,7 @@ import           Day13
 import           Day14
 import           Day16
 import           Day17
+import           Day18
 
 main :: IO ()
 main = putStrLn "use ghci"

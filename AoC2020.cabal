@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 751ce8f1bf1eba9ecadb13fdc3bbede4f2bee1fcfda6dca13076580c71d57edb
+-- hash: 902cd9a480fb633f22698e82ad28583897f77150b8c1a2a7afcf4d3c6e9cc14a
 
 name:           AoC2020
 version:        0.1.0.0
@@ -34,6 +34,10 @@ library
       Day12
       Day13
       Day14
+      Day15
+      Day16
+      Day17
+      Day18
       Day2
       Day3
       Day4
@@ -49,7 +53,10 @@ library
   build-depends:
       base >=4.7 && <5
     , containers
+    , megaparsec
+    , parser-combinators
     , split
+    , vector
   default-language: Haskell2010
 
 executable AoC2020-exe
@@ -63,7 +70,10 @@ executable AoC2020-exe
       AoC2020
     , base >=4.7 && <5
     , containers
+    , megaparsec
+    , parser-combinators
     , split
+    , vector
   default-language: Haskell2010
 
 test-suite AoC2020-test
@@ -78,5 +88,8 @@ test-suite AoC2020-test
       AoC2020
     , base >=4.7 && <5
     , containers
+    , megaparsec
+    , parser-combinators
     , split
+    , vector
   default-language: Haskell2010
